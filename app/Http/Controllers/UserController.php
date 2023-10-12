@@ -7,18 +7,32 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $users = User::all();
 
 
 
-        return view('users.index', ['users'=> $users]);
+        return view('users.index', ['users' => $users]);
     }
 
-    public function tambah(){
-        return view('users.tambah');
+    public function tambah(Request $request)
+    {
+        if ($request->has('name')) {
+            $user = new User;
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = $request->password;
+
+            $user->save();
+            return redirect('/user');
+        } else {
+            return view('users.tambah');
+        }
     }
-    public function lihat(){
+    public function lihat()
+    {
         return view('users.lihat');
     }
 }
